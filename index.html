@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮交互示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f1e7d5;
+            position: relative;
+        }
+
+        img {
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #68495b;
+            font-size: 28px;
+            margin: 20px 0;
+            margin-block-start: 0.67em;
+            margin-block-end: 0.67em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-weight: bold;
+        }
+        #yesButton{
+            font-size: 18px;
+            background-color: #d4818e;
+            color: white;
+        }
+        #noButton{
+            font-size: 18px;
+            background-color: #6784b1;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+<img id="myImage" src="38c6af617604800a3dfdb298d05340c5.gif" alt="示例图片">
+<p id="myParagraph">可以成为我的小狗嘛？</p>
+<div style="display: flex;">
+    <button id="yesButton">可以</button>
+    <button id="noButton">不要</button>
+</div>
+<audio id="myAudio" src="o8ABGEwGOBxNgFfgFDCRpjU5FQGIEMfzOaXEze.m4a" controls style="display: none;"></audio>
+<script>
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const myImage = document.getElementById('myImage');
+    const myParagraph = document.getElementById('myParagraph');
+    let clickCount = 0;
+
+    noButton.addEventListener('click', function () {
+        clickCount++;
+        if (clickCount === 1) {
+            noButton.textContent = '点错了？';
+            const buttonContainer = this.parentNode;
+            buttonContainer.insertBefore(this, yesButton);
+            myImage.src = '807ec32535fcb9a25cc4afc06fb3038a.gif';
+        } else if (clickCount === 2) {
+            noButton.textContent = '大胆！';
+            const buttonContainer = this.parentNode;
+            buttonContainer.insertBefore(yesButton, this);
+            // 第二次点击“不要”按钮时更改图片地址
+
+        } else {
+            noButton.textContent = '追不上吧';
+            const buttonRect = noButton.getBoundingClientRect();
+            const currentLeft = buttonRect.left;
+            const currentTop = buttonRect.top;
+
+            const maxLeft = currentLeft + 500 - buttonRect.width;
+            const minLeft = currentLeft - 500;
+            const maxTop = currentTop + 500 - buttonRect.height;
+            const minTop = currentTop - 500;
+
+            const randomMove = () => {
+                let left = Math.floor(Math.random() * (maxLeft - minLeft + 1)) + minLeft;
+                let top = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
+                noButton.style.left = (left - currentLeft) + 'px';
+                noButton.style.top = (top - currentTop) + 'px';
+            };
+
+            const moveInterval = setInterval(randomMove, 50);
+            setTimeout(() => {
+                clearInterval(moveInterval);
+                noButton.style.left = '';
+                noButton.style.top = '';
+            }, 2500);
+        }
+    });
+
+    yesButton.addEventListener('click', function () {
+        myParagraph.textContent = '嘻嘻嘻！乖狗狗~(/≧▽≦)/♡︎ᐝ';
+        myImage.src = '848a11bb27f4d3cbf9a1e465685d5caf.gif';
+        const imageParent = myImage.parentNode;
+        imageParent.insertBefore(myParagraph, myImage);
+        yesButton.style.display = 'none';
+        noButton.style.display = 'none';
+        myAudio.play();
+    });
+</script>
+</body>
+
+</html>
